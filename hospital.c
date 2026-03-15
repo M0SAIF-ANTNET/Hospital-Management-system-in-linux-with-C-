@@ -8,17 +8,13 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <errno.h>
-
 #define BASE "/hospital"
 #define ADMIN_DIR "/hospital/admin"
 #define DOCTORS_DIR "/hospital/doctors"
 #define PATIENTS_DIR "/hospital/patients"
-
 typedef enum { ROLE_NONE, ROLE_ADMIN, ROLE_DOCTOR, ROLE_PATIENT } Role;
-
 Role role;
 uid_t uid;
-
 int valid_name(const char *s) {
     if(!s || !*s) return 0;
     for(int i=0; s[i]; i++)
