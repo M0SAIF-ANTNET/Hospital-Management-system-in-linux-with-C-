@@ -1,206 +1,133 @@
-# Hospital Management System (Linux - C)
+# Restaurant Management System
 
-A secure command-line Hospital Management System written in C for Linux environments.  
-The project demonstrates real operating system concepts such as user roles, permissions, file system security, and safe system-level programming.
+## Project Overview
+The Restaurant Management System is a Java-based Object-Oriented Programming (OOP) application designed to manage the daily operations of a restaurant. The system integrates multiple modules to handle users, employees, customers, meals, orders, billing, offers, rewards, notifications, and reports.
 
-This project is intended for **Operating Systems**, **Linux**, and **Security** practice.
-
----
+The goal of this project is to apply OOP principles such as encapsulation, inheritance, abstraction, and modular design to build a structured and scalable system.
 
 ## Features
 
-- Role-based access control (Admin / Doctor / Patient)
-- Real Linux users and groups (UID / GID based)
-- Secure file and directory operations
-- No system() or popen()
-- No command injection
-- Path traversal protection
-- File sandboxing inside `/hospital`
-- Uses POSIX system calls only
-- Clean and minimal C design
+### Administrative Module
+- Manage employees (Add, Update, Delete, Search, List)
+- Manage meals (Add, Update, Delete, Search, List)
+- Generate reports (customers, employees, sales)
+- Create offers and marketing programs
 
----
+### Employee Module
+- Manage customers (Add, Update, Delete, Search, List)
+- Create and cancel orders
+- Handle billing and payments
+- Receive notifications about offers and rewards
 
-## Roles
+### Customer Module
+- Store customer profile and history
+- Track orders and payments
+- Track received offers and gifts
+- Register in loyalty and marketing programs
 
-| Role     | Permissions |
-|---------|-------------|
-| Admin   | Full access, manage doctors directories |
-| Doctor  | Manage doctor directories, add notes |
-| Patient | Create files, add notes, view allowed files |
+### Orders & Meals
+- Create orders with multiple items
+- Calculate total order cost
+- Manage meal availability and categories
 
----
+### Billing & Payments
+- Generate bills from orders
+- Process payments
+- Track payment history
+- Apply offers and discounts
 
-## Requirements
+### Offers & Rewards
+- Apply discounts based on conditions
+- Reward customers based on total spending
+- Loyalty and reward program support
 
-- Linux OS
-- GCC compiler
-- Root access (for initial setup only)
+### Notifications
+- Notify employees about new offers
+- Notify customers when eligible for rewards
 
----
+### Reports
+- Generate customer reports
+- Generate employee reports
+- Generate sales and payment reports
 
-## Installation & Setup
+## Technologies Used
+- Java (Core Java)
+- Object-Oriented Programming (OOP)
+- ArrayList for data storage
+- Console-based UI
+- Git & GitHub for version control
 
-### Install GCC
+## Project Structure
 
-```bash
-gcc --version
+```text
+src/
+│
+├── model/        → Data classes (Customer, Order, Meal, etc.)
+├── service/      → Business logic (OrderService, BillingService, etc.)
+├── util/         → Helper classes (InputValidator, IdGenerator, etc.)
+├── enums/        → Enumerations (OrderStatus, PaymentMethod, etc.)
+└── main/         → Main application entry point
 ```
 
-If not installed:
+## Team Members & Roles
+- Member 1 — Team Leader (Architecture & Integration)
+- Member 2 — Employee & Customer Management
+- Member 3 — Meals & Orders
+- Member 4 — Billing, Offers & Reports
+- Member 5 — Menus & Input Handling
+- Member 6 — Programs, Testing & Documentation
 
-```bash
-sudo apt install build-essential
-```
+## How to Run the Project
 
----
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:M0SAIF-ANTNET/Restaurant-Management-System.git
+   ```
 
-### Create Hospital Directories
+2. Navigate to the project folder:
+   ```bash
+   cd Restaurant-Management-System
+   ```
 
-```bash
-sudo mkdir /hospital
-sudo mkdir /hospital/admin
-sudo mkdir /hospital/doctors
-sudo mkdir /hospital/patients
+3. Compile the project:
+   ```bash
+   javac src/main/Main.java
+   ```
 
-sudo chmod 750 /hospital
-sudo chmod 750 /hospital/admin
-sudo chmod 770 /hospital/doctors
-sudo chmod 770 /hospital/patients
-```
+4. Run the project:
+   ```bash
+   java src.main.Main
+   ```
 
----
+## Development Workflow
+- Each team member works on a separate branch
+- Changes are committed with clear messages
+- Code is reviewed and merged by the Team Leader
+- Main branch contains stable code only
 
-### Create Users and Groups
+## System Workflow
+1. Admin logs in and manages employees and meals
+2. Employee logs in and manages customers
+3. Employee creates an order for a customer
+4. Order total is calculated
+5. Bill is generated
+6. Payment is processed
+7. System checks for offers and rewards
+8. Notifications are sent
+9. Reports can be generated
 
-```bash
-sudo groupadd doctors
-sudo groupadd patients
+## OOP Concepts Applied
+- **Encapsulation** → Private fields with getters/setters
+- **Inheritance** → Person → User → Admin/Employee
+- **Abstraction** → Separation of models and services
+- **Composition** → Order contains OrderItems, OrderItem contains Meal
 
-sudo useradd -m admin
-sudo useradd -m doctor1
-sudo useradd -m patient1
+## Future Improvements
+- Add GUI (JavaFX or Swing)
+- Add database integration (MySQL)
+- Add authentication security
+- Improve reporting system
+- Add real-time notifications
 
-sudo usermod -aG doctors doctor1
-sudo usermod -aG patients patient1
-```
-
-Set passwords:
-
-```bash
-sudo passwd admin
-sudo passwd doctor1
-sudo passwd patient1
-```
-
----
-
-### Set Ownership
-
-```bash
-sudo chown admin:admin /hospital/admin
-sudo chown admin:doctors /hospital/doctors
-sudo chown admin:patients /hospital/patients
-```
-
----
-
-## Build
-
-From the project root directory:
-
-```bash
-gcc src/hospital.c -o hospital -std=c11 -Wall -Wextra
-```
-
----
-
-## Run
-
-### Admin
-
-```bash
-su - admin
-./hospital
-```
-
-### Doctor
-
-```bash
-su - doctor1
-./hospital
-```
-
-### Patient
-
-```bash
-su - patient1
-./hospital
-```
-
----
-
-## Menu Options
-
-```
-1  List admin directory
-2  List doctors directory
-3  List patients directory
-4  Create doctors directory
-5  Remove doctors directory
-6  Copy file
-7  Move file
-8  Add note
-9  Create patient file
-10 View file
-0  Exit
-```
-
----
-
-## Security Design
-
-- No shell execution  
-- No command parsing  
-- All file paths are restricted to `/hospital`  
-- Input validation for file and directory names  
-- Uses `open`, `read`, `write`, `mkdir`, `rename`  
-- Uses real Linux permissions and groups  
-
----
-
-## Testing
-
-### Path Traversal Protection
-
-```
-../../etc/passwd
-```
-
-Blocked.
-
-### Command Injection Attempts
-
-```
-test; rm -rf /
-```
-
-Rejected.
-
----
-
-## Educational Value
-
-This project demonstrates:
-
-- Linux user/group permissions  
-- Secure system programming in C  
-- RBAC (Role-Based Access Control)  
-- File system sandboxing  
-- OS-level security concepts  
-
----
-
-## Disclaimer
-
-This project is for educational purposes only and should not be used in production environments.
+## Final Note
+This project demonstrates how to build a complete system using Object-Oriented Programming principles. The focus is on clean architecture, modular design, and proper collaboration between team members.
